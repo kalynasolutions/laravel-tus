@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace KalynaSolutions\Tus\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class TusCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-tus';
 
     public $description = 'My command';
 
