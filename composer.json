@@ -1,10 +1,12 @@
 {
     "name": "kalynasolutions/laravel-tus",
-    "description": "This is my package laravel-tus",
+    "description": "Laravel package for handling resumable file uploads with tus protocol and native uppy support",
     "keywords": [
         "kalynasolutions",
         "laravel",
-        "laravel-tus"
+        "laravel-tus",
+        "arthurpatriot",
+        "tus"
     ],
     "homepage": "https://github.com/kalynasolutions/laravel-tus",
     "license": "MIT",
@@ -16,7 +18,7 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "spatie/laravel-package-tools": "^1.14.0",
         "illuminate/contracts": "^10.0"
     },
