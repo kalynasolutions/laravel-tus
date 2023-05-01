@@ -2,9 +2,9 @@
 
 namespace KalynaSolutions\Tus;
 
+use KalynaSolutions\Tus\Commands\TusCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use KalynaSolutions\Tus\Commands\TusCommand;
 
 class TusServiceProvider extends PackageServiceProvider
 {
