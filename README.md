@@ -1,19 +1,13 @@
-# This is my package laravel-tus
+# Laravel Tus Package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kalynasolutions/laravel-tus.svg?style=flat-square)](https://packagist.org/packages/kalynasolutions/laravel-tus)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kalynasolutions/laravel-tus/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kalynasolutions/laravel-tus/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/kalynasolutions/laravel-tus/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/kalynasolutions/laravel-tus/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kalynasolutions/laravel-tus.svg?style=flat-square)](https://packagist.org/packages/kalynasolutions/laravel-tus)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Laravel package for handling resumable file uploads with tus protocol and native [Uppy.js](https://uppy.io) support **without** additional tus servers.
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-tus.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-tus)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+> 100% Tus.io resumable upload [protocol](https://tus.io/protocols/resumable-upload.html) support
 
 ## Installation
 
@@ -23,37 +17,35 @@ You can install the package via composer:
 composer require kalynasolutions/laravel-tus
 ```
 
-You can publish and run the migrations with:
+You can publish and run the migrations with (optional):
 
 ```bash
 php artisan vendor:publish --tag="laravel-tus-migrations"
 php artisan migrate
 ```
 
-You can publish the config file with:
+You can publish the config file with (optional):
 
 ```bash
 php artisan vendor:publish --tag="laravel-tus-config"
 ```
 
-This is the contents of the published config file:
+## Usage with Uppy.js
 
-```php
-return [
-];
-```
+> You can use this package with other tus libraries, package fully implemented with Tus.io protocol RFC.
 
-Optionally, you can publish the views using
+```js
+import Uppy, { debugLogger } from "@uppy/core";
+import Tus from "@uppy/tus";
 
-```bash
-php artisan vendor:publish --tag="laravel-tus-views"
-```
+const TUS_ENDPOINT = "https://site.test/tus";
+const TUS_LIMIT = 5;
+const TUS_CHUNK_SIZE = 20000000;
 
-## Usage
 
-```php
-$tus = new KalynaSolutions\Tus();
-echo $tus->echoPhrase('Hello, KalynaSolutions!');
+const uppy = new Uppy({ logger: debugLogger });
+
+uppy.use(Tus, { endpoint: TUS_ENDPOINT, limit: TUS_LIMIT, chunkSize: TUS_CHUNK_SIZE })
 ```
 
 ## Testing
