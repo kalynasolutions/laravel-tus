@@ -18,8 +18,8 @@ class TusServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-tus')
             ->hasConfigFile()
-            ->hasViews()
             ->hasMigration('create_laravel-tus_table')
+            ->hasRoute('tus')
             ->hasCommand(TusCommand::class);
     }
 }
