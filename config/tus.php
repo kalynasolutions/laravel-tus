@@ -9,6 +9,8 @@ return [
 
     'storage_disk' => env('TUS_STORAGE_DISK', 'local'),
 
+    'storage_path' => env('TUS_STORAGE_PATH', 'tus'),
+
     'file_size_limit' => null,
 
     'upload_expiration' => env('TUS_UPLOAD_EXPIRATION', 30),

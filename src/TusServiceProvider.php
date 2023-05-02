@@ -2,7 +2,7 @@
 
 namespace KalynaSolutions\Tus;
 
-use KalynaSolutions\Tus\Commands\TusCommand;
+use KalynaSolutions\Tus\Commands\TusClearExpiredUploadsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -18,8 +18,7 @@ class TusServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-tus')
             ->hasConfigFile()
-            ->hasMigration('create_laravel-tus_table')
             ->hasRoute('tus')
-            ->hasCommand(TusCommand::class);
+            ->hasCommand(TusClearExpiredUploadsCommand::class);
     }
 }
