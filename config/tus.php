@@ -20,6 +20,6 @@ return [
         'creation-with-upload',
         'expiration',
         'checksum',
-        'termination'
+        'termination',
     ],
 ];
