@@ -37,7 +37,6 @@
     "autoload": {
         "psr-4": {
             "KalynaSolutions\\Tus\\": "src/",
-            "KalynaSolutions\\Tus\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
