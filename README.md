@@ -9,6 +9,10 @@ Laravel package for handling resumable file uploads with tus protocol and native
 
 > 100% Tus.io resumable upload [protocol](https://tus.io/protocols/resumable-upload.html) support
 
+| Laravel Version | Package Version | Status |
+|:---------------:|:---------------:|:------:|
+|      10.x       |      ^1.0       |   ✅    |
+
 ## Installation
 
 You can install the package via composer:
