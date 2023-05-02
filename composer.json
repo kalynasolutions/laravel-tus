@@ -1,6 +1,6 @@
 {
     "name": "kalynasolutions/laravel-tus",
-    "description": "Laravel package for handling resumable file uploads with tus protocol and native uppy support",
+    "description": "Laravel package for handling resumable file uploads with tus protocol and native Uppy.js support without additional tus servers",
     "keywords": [
         "kalynasolutions",
         "laravel",
@@ -37,7 +37,6 @@
     "autoload": {
         "psr-4": {
             "KalynaSolutions\\Tus\\": "src/",
-            "KalynaSolutions\\Tus\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
