@@ -2,14 +2,15 @@
 
 namespace KalynaSolutions\Tus\Helpers;
 
-use Illuminate\Support\Str;
 use KalynaSolutions\Tus\Exceptions\FileNotFoundException;
 use KalynaSolutions\Tus\Facades\Tus;
 
 readonly class TusFile
 {
     public string $id;
+
     public string $path;
+
     public string $disk;
 
     public array $metadata;
@@ -24,7 +25,7 @@ readonly class TusFile
 
     public static function create(string $id = null, int $size = 0, ?string $rawMetadata = null): static
     {
-        if (!$id) {
+        if (! $id) {
             $id = Tus::id();
         }
 
@@ -49,7 +50,7 @@ readonly class TusFile
 
         $path = Tus::path($id, $metadata['extension'] ?? null);
 
-        if (!Tus::storage()->exists($path)) {
+        if (! Tus::storage()->exists($path)) {
             throw new FileNotFoundException;
         }
 
