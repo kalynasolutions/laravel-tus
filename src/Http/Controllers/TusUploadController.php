@@ -5,8 +5,10 @@ namespace KalynaSolutions\Tus\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Storage;
 use KalynaSolutions\Tus\Events\FileUploadCreated;
 use KalynaSolutions\Tus\Events\FileUploadFinished;
+use KalynaSolutions\Tus\Events\FileUploadStarted;
 use KalynaSolutions\Tus\Facades\Tus;
 use KalynaSolutions\Tus\Helpers\TusFile;
 
@@ -27,12 +29,18 @@ class TusUploadController extends BaseController
             rawMetadata: $request->header('upload-metadata')
         );
 
+        $contents = Tus::extensionIsActive('creation-with-upload') && (int) $request->header('content-length') > 0 ? $request->getContent() : '';
+
         Tus::storage()->put(
             path: $tusFile->path,
-            contents: Tus::extensionIsActive('creation-with-upload') && (int) $request->header('content-length') > 0 ? $request->getContent() : ''
+            contents: $contents
         );
 
         event(new FileUploadCreated($tusFile));
+
+        if (!empty($contents)) {
+            event(new FileUploadStarted($tusFile));
+        }
 
         return response(
             status: 201,
@@ -72,10 +80,14 @@ class TusUploadController extends BaseController
             );
         }
 
+        if ((int) $request->header('upload-offset') === 0) {
+            event(new FileUploadStarted($tusFile));
+        }
+
         $offset = Tus::storage()->size($tusFile->path) + Tus::append($tusFile->path, $request->getContent());
 
         if ($offset === (int) Tus::metadata()->readMeta($id, 'size')) {
-           event(new FileUploadFinished($tusFile));
+            event(new FileUploadFinished($tusFile));
         }
 
         return response(

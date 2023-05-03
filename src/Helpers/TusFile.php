@@ -28,22 +28,26 @@ readonly class TusFile
             $id = Tus::id();
         }
 
+        $metadata = Tus::metadata()->store(
+            id: $id,
+            rawMetadata: $rawMetadata,
+            metadata: [
+                'size' => $size,
+            ]
+        );
+
         return new static(
             id: $id,
-            path: Tus::path($id),
-            metadata: Tus::metadata()->store(
-                id: $id,
-                rawMetadata: $rawMetadata,
-                customMetadata: [
-                    'size' => $size,
-                ]
-            )
+            path: Tus::path($id, $metadata['extension']),
+            metadata: $metadata
         );
     }
 
     public static function find(string $id): static
     {
-        $path = Tus::path($id);
+        $metadata = Tus::metadata()->read($id);
+
+        $path = Tus::path($id, $metadata['extension'] ?? null);
 
         if (!Tus::storage()->exists($path)) {
             throw new FileNotFoundException;
@@ -52,7 +56,7 @@ readonly class TusFile
         return new static(
             id: $id,
             path: $path,
-            metadata: Tus::metadata()->read($id)
+            metadata: $metadata
         );
     }
 }

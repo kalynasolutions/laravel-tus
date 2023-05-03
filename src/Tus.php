@@ -7,6 +7,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 use KalynaSolutions\Tus\Exceptions\FileAppendException;
 use KalynaSolutions\Tus\Helpers\TusHeaderBuilder;
 use KalynaSolutions\Tus\Helpers\TusUploadMetadataManager;
@@ -85,13 +86,19 @@ class Tus
         return $id;
     }
 
-    public function path(string $id): string
+    public function path(string $id, ?string $extension = null): string
     {
-        if (!empty(config('tus.storage_path'))) {
-            return sprintf("%s/%s", config('tus.storage_path'), $id);
-        }
-
-        return $id;
+        return str('')
+            ->when(
+                value: !empty(config('tus.storage_path')),
+                callback: fn(Stringable $str) => $str->append(config('tus.storage_path'), '/')
+            )
+            ->append($id)
+            ->when(
+                value: $extension,
+                callback: fn(Stringable $str) => $str->append('.', $extension)
+            )
+            ->toString();
     }
 
     public function storage(): Filesystem
@@ -123,4 +130,6 @@ class Tus
 
         return $fw;
     }
+
+    public function appendExtension(string $id) {}
 }
