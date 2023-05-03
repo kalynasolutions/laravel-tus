@@ -37,7 +37,7 @@ final readonly class TusFile
             ]
         );
 
-        return new static(
+        return new self(
             id: $id,
             path: Tus::path($id, $metadata['extension']),
             metadata: $metadata
