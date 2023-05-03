@@ -2,7 +2,6 @@
 
 namespace KalynaSolutions\Tus;
 
-use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
@@ -77,7 +76,7 @@ class Tus
 
             $id = Str::random(40);
 
-            if (!$this->storage()->exists($this->path($id))) {
+            if (! $this->storage()->exists($this->path($id))) {
                 break;
             }
 
@@ -90,13 +89,13 @@ class Tus
     {
         return str('')
             ->when(
-                value: !empty(config('tus.storage_path')),
-                callback: fn(Stringable $str) => $str->append(config('tus.storage_path'), '/')
+                value: ! empty(config('tus.storage_path')),
+                callback: fn (Stringable $str) => $str->append(config('tus.storage_path'), '/')
             )
             ->append($id)
             ->when(
                 value: $extension,
-                callback: fn(Stringable $str) => $str->append('.', $extension)
+                callback: fn (Stringable $str) => $str->append('.', $extension)
             )
             ->toString();
     }
@@ -110,7 +109,7 @@ class Tus
     {
         $path = $this->storage()->path($path);
 
-        if (!is_writable($path)) {
+        if (! is_writable($path)) {
             throw new FileAppendException(message: 'File not exists or not writable');
         }
 

@@ -14,20 +14,20 @@ class TusUploadMetadataManager
             ->mapWithKeys(function (string $data) {
                 $data = explode(' ', $data);
 
-                return [$data[ 0 ] => base64_decode($data[ 1 ])];
+                return [$data[0] => base64_decode($data[1])];
             })
             ->toArray();
     }
 
     public function store(string $id, ?string $rawMetadata = null, array $metadata = []): array
     {
-        if (!empty($rawMetadata)) {
+        if (! empty($rawMetadata)) {
             $metadata = [...$metadata, ...$this->parse($rawMetadata)];
         }
 
-        if (!isset($metadata[ 'extension' ])) {
-            $extension = Str::afterLast($metadata[ 'name' ], '.');
-            $metadata[ 'extension' ] = empty($extension) ? null : $extension;
+        if (! isset($metadata['extension'])) {
+            $extension = Str::afterLast($metadata['name'], '.');
+            $metadata['extension'] = empty($extension) ? null : $extension;
         }
 
         match (config('tus.driver')) {
@@ -56,6 +56,6 @@ class TusUploadMetadataManager
 
     public function readMeta(string $id, string $key): mixed
     {
-        return $this->read($id)[ $key ] ?? null;
+        return $this->read($id)[$key] ?? null;
     }
 }

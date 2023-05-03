@@ -5,7 +5,6 @@ namespace KalynaSolutions\Tus\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Storage;
 use KalynaSolutions\Tus\Events\FileUploadCreated;
 use KalynaSolutions\Tus\Events\FileUploadFinished;
 use KalynaSolutions\Tus\Events\FileUploadStarted;
@@ -38,7 +37,7 @@ class TusUploadController extends BaseController
 
         event(new FileUploadCreated($tusFile));
 
-        if (!empty($contents)) {
+        if (! empty($contents)) {
             event(new FileUploadStarted($tusFile));
         }
 
@@ -105,7 +104,7 @@ class TusUploadController extends BaseController
     {
         $tusFile = TusFile::find($id);
 
-        if (!Tus::extensionIsActive('termination')) {
+        if (! Tus::extensionIsActive('termination')) {
             $deleted = false;
         } else {
             $deleted = Tus::storage()->delete($tusFile->path);
