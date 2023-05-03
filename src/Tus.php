@@ -76,7 +76,7 @@ class Tus
 
             $id = Str::random(40);
 
-            if (!Tus::storage()->exists($this->path($id))) {
+            if (!$this->storage()->exists($this->path($id))) {
                 break;
             }
 

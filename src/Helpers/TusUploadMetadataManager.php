@@ -17,7 +17,7 @@ class TusUploadMetadataManager
             ->toArray();
     }
 
-    public function store(string $id, ?string $rawMetadata = null, array $customMetadata = []): void
+    public function store(string $id, ?string $rawMetadata = null, array $customMetadata = []): array
     {
         if (!empty($rawMetadata)) {
             $customMetadata = [...$customMetadata, ...$this->parse($rawMetadata)];
@@ -26,6 +26,8 @@ class TusUploadMetadataManager
         match (config('tus.driver')) {
             default => $this->storeInFile($id, $customMetadata),
         };
+
+        return $customMetadata;
     }
 
     protected function storeInFile(string $id, array $metadata): void

@@ -5,7 +5,10 @@ namespace KalynaSolutions\Tus\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use KalynaSolutions\Tus\Events\FileUploadCreated;
+use KalynaSolutions\Tus\Events\FileUploadFinished;
 use KalynaSolutions\Tus\Facades\Tus;
+use KalynaSolutions\Tus\Helpers\TusFile;
 
 class TusUploadController extends BaseController
 {
@@ -19,71 +22,41 @@ class TusUploadController extends BaseController
 
     public function post(Request $request): Response
     {
-        $id = Tus::id();
-        $path = Tus::path($id);
+        $tusFile = TusFile::create(
+            size: $request->header('upload-length', 0),
+            rawMetadata: $request->header('upload-metadata')
+        );
 
         Tus::storage()->put(
-            path: $path,
+            path: $tusFile->path,
             contents: Tus::extensionIsActive('creation-with-upload') && (int) $request->header('content-length') > 0 ? $request->getContent() : ''
         );
 
-        Tus::metadata()->store(
-            id: $id,
-            rawMetadata: $request->header('upload-metadata'),
-            customMetadata: [
-                'size' => $request->header('upload-length'),
-            ]
-        );
+        event(new FileUploadCreated($tusFile));
 
         return response(
             status: 201,
-            headers: Tus::headers()
-                ->forPost(
-                    id: $id,
-                    offset: Tus::storage()->size($path),
-                    lastModified: Tus::storage()->lastModified($path)
-                )
-                ->toArray()
+            headers: Tus::headers()->forPost($tusFile)->toArray()
         );
     }
 
     public function head(string $id): Response
     {
-        $path = Tus::path($id);
-
-        if (!Tus::storage()->exists($path)) {
-            return response(
-                status: 404,
-                headers: Tus::headers()->default()->toArray()
-            );
-        }
+        $tusFile = TusFile::find($id);
 
         return response(
             status: 200,
-            headers: Tus::headers()
-                ->forHead(
-                    length: Tus::metadata()->readMeta($id, 'size'),
-                    offset: Tus::storage()->size($path),
-                    lastModified: Tus::storage()->lastModified($path)
-                )
-                ->toArray()
+            headers: Tus::headers()->forHead($tusFile)->toArray()
         );
     }
 
     public function patch(Request $request, string $id): Response
     {
-        $path = Tus::path($id);
+        $tusFile = TusFile::find($id);
 
-        if (!Tus::storage()->exists($path)) {
-            return response(
-                status: 404,
-                headers: Tus::headers()->default()->toArray()
-            );
-        }
+        if (Tus::extensionIsActive('expiration') && Tus::isUploadExpired(Tus::storage()->lastModified($tusFile->path))) {
 
-        if (Tus::extensionIsActive('expiration') && Tus::isUploadExpired(Tus::storage()->lastModified($path))) {
-
-            Tus::storage()->delete($path);
+            Tus::storage()->delete($tusFile->path);
 
             return response(
                 status: 404,
@@ -92,17 +65,17 @@ class TusUploadController extends BaseController
 
         }
 
-        if ((int) $request->header('upload-offset') !== Tus::storage()->size($path)) {
+        if ((int) $request->header('upload-offset') !== Tus::storage()->size($tusFile->path)) {
             return response(
                 status: 409,
                 headers: Tus::headers()->default()->toArray()
             );
         }
 
-        $offset = Tus::storage()->size($path) + Tus::append($path, $request->getContent());
+        $offset = Tus::storage()->size($tusFile->path) + Tus::append($tusFile->path, $request->getContent());
 
         if ($offset === (int) Tus::metadata()->readMeta($id, 'size')) {
-            logs()->info('COMPLETED '.$id);
+           event(new FileUploadFinished($tusFile));
         }
 
         return response(
@@ -110,7 +83,7 @@ class TusUploadController extends BaseController
             headers: Tus::headers()
                 ->forPatch(
                     offset: $offset,
-                    lastModified: Tus::storage()->lastModified($path)
+                    lastModified: Tus::storage()->lastModified($tusFile->path)
                 )
                 ->toArray()
         );
@@ -118,14 +91,12 @@ class TusUploadController extends BaseController
 
     public function delete(string $id): Response
     {
-        $path = Tus::path($id);
+        $tusFile = TusFile::find($id);
 
         if (!Tus::extensionIsActive('termination')) {
             $deleted = false;
-        } elseif (Tus::storage()->exists($path)) {
-            $deleted = Tus::storage()->delete($path);
         } else {
-            $deleted = false;
+            $deleted = Tus::storage()->delete($tusFile->path);
         }
 
         return response(
