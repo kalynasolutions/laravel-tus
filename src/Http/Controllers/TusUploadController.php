@@ -51,7 +51,7 @@ class TusUploadController extends BaseController
     {
         $path = Tus::path($id);
 
-        if (!Tus::storage()->exists($path)) {
+        if (! Tus::storage()->exists($path)) {
             return response(
                 status: 404,
                 headers: Tus::headers()->default()->toArray()
@@ -74,7 +74,7 @@ class TusUploadController extends BaseController
     {
         $path = Tus::path($id);
 
-        if (!Tus::storage()->exists($path)) {
+        if (! Tus::storage()->exists($path)) {
             return response(
                 status: 404,
                 headers: Tus::headers()->default()->toArray()
@@ -120,7 +120,7 @@ class TusUploadController extends BaseController
     {
         $path = Tus::path($id);
 
-        if (!Tus::extensionIsActive('termination')) {
+        if (! Tus::extensionIsActive('termination')) {
             $deleted = false;
         } elseif (Tus::storage()->exists($path)) {
             $deleted = Tus::storage()->delete($path);

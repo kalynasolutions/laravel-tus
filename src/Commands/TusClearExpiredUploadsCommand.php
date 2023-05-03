@@ -3,7 +3,6 @@
 namespace KalynaSolutions\Tus\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use KalynaSolutions\Tus\Facades\Tus;
 
 class TusClearExpiredUploadsCommand extends Command
