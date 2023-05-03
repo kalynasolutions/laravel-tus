@@ -130,6 +130,4 @@ class Tus
 
         return $fw;
     }
-
-    public function appendExtension(string $id) {}
 }
