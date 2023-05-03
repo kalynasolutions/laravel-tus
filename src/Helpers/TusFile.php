@@ -5,7 +5,7 @@ namespace KalynaSolutions\Tus\Helpers;
 use KalynaSolutions\Tus\Exceptions\FileNotFoundException;
 use KalynaSolutions\Tus\Facades\Tus;
 
-readonly class TusFile
+final readonly class TusFile
 {
     public string $id;
 
