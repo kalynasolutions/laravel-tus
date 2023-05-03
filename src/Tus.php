@@ -2,12 +2,12 @@
 
 namespace KalynaSolutions\Tus;
 
-use _PHPStan_532094bc1\Nette\Neon\Exception;
+use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use KalynaSolutions\Tus\Exceptions\FileAppendException;
 use KalynaSolutions\Tus\Helpers\TusHeaderBuilder;
 use KalynaSolutions\Tus\Helpers\TusUploadMetadataManager;
 
@@ -99,23 +99,28 @@ class Tus
         return Storage::disk(config('tus.storage_disk'));
     }
 
-    public function append(string $path, string $data): void
+    public function append(string $path, string $data): int
     {
         $path = $this->storage()->path($path);
 
         if (!is_writable($path)) {
-            throw new Exception('writable');
+            throw new FileAppendException(message: 'File not exists or not writable');
         }
 
+        $fp = fopen($path, 'a');
 
-        if (!$fp = fopen($path, 'a')) {
-            throw new Exception('open');
+        if ($fp === false) {
+            throw new FileAppendException(message: 'File open error');
         }
 
-        if (fwrite($fp, $data) === false) {
-            throw new Exception('write');
+        $fw = fwrite($fp, $data);
+
+        if ($fw === false) {
+            throw new FileAppendException(message: 'File write error');
         }
 
         fclose($fp);
+
+        return $fw;
     }
 }

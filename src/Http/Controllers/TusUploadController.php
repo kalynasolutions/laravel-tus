@@ -99,9 +99,7 @@ class TusUploadController extends BaseController
             );
         }
 
-        Tus::append($path, $request->getContent());
-
-        $offset = Tus::storage()->size($path);
+        $offset = Tus::storage()->size($path) + Tus::append($path, $request->getContent());
 
         if ($offset === (int) Tus::metadata()->readMeta($id, 'size')) {
             logs()->info('COMPLETED '.$id);

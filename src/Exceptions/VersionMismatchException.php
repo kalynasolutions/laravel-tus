@@ -5,7 +5,7 @@ namespace KalynaSolutions\Tus\Exceptions;
 use KalynaSolutions\Tus\Facades\Tus;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class TusVersionMismatchException extends HttpException
+class VersionMismatchException extends HttpException
 {
     public function __construct()
     {
