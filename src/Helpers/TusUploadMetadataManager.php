@@ -12,14 +12,15 @@ class TusUploadMetadataManager
             ->explode(',')
             ->mapWithKeys(function (string $data) {
                 $data = explode(' ', $data);
-                return [$data[ 0 ] => base64_decode($data[ 1 ])];
+
+                return [$data[0] => base64_decode($data[1])];
             })
             ->toArray();
     }
 
     public function store(string $id, ?string $rawMetadata = null, array $customMetadata = []): array
     {
-        if (!empty($rawMetadata)) {
+        if (! empty($rawMetadata)) {
             $customMetadata = [...$customMetadata, ...$this->parse($rawMetadata)];
         }
 
@@ -32,7 +33,7 @@ class TusUploadMetadataManager
 
     protected function storeInFile(string $id, array $metadata): void
     {
-        $path = sprintf("%s.json", Tus::path($id));
+        $path = sprintf('%s.json', Tus::path($id));
 
         Tus::storage()->put($path, json_encode($metadata));
     }
@@ -46,14 +47,13 @@ class TusUploadMetadataManager
 
     protected function readFromFile(string $id): array
     {
-        $path = sprintf("%s.json", Tus::path($id));
+        $path = sprintf('%s.json', Tus::path($id));
 
         return Tus::storage()->json($path) ?? [];
     }
 
     public function readMeta(string $id, string $key): mixed
     {
-        return $this->read($id)[ $key ] ?? null;
+        return $this->read($id)[$key] ?? null;
     }
-
 }
