@@ -53,7 +53,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function maxSize(): static
     {
-        $this->headers['Tus-Max-Size'] = config('tus.file_size_limit') ? (int) config('tus.file_size_limit') : (int) ini_get('post_max_size');
+        $this->headers['Tus-Max-Size'] = Tus::maxFileSize();
 
         return $this;
     }
@@ -112,6 +112,17 @@ class TusHeaderBuilder implements Arrayable
         return $this;
     }
 
+    public function length(int $length): static
+    {
+        if ($length === 0) {
+            return $this;
+        }
+
+        $this->headers['Upload-Length'] = $length;
+
+        return $this;
+    }
+
     /**
      * @return $this
      */
@@ -125,9 +136,13 @@ class TusHeaderBuilder implements Arrayable
     /**
      * @return $this
      */
-    public function forPost(string $id, int $offset, int $lastModified): static
+    public function forPost(TusFile $tusFile): static
     {
-        $this->resumable()->location($id)->offset($offset)->expires($lastModified)->maxSize();
+        $this->resumable()
+            ->location($tusFile->id)
+            ->offset(Tus::storage()->size($tusFile->path))
+            ->expires(Tus::storage()->lastModified($tusFile->path))
+            ->maxSize();
 
         return $this;
     }
@@ -135,9 +150,12 @@ class TusHeaderBuilder implements Arrayable
     /**
      * @return $this
      */
-    public function forHead(int $offset, int $lastModified): static
+    public function forHead(TusFile $tusFile): static
     {
-        $this->resumable()->offset($offset)->expires($lastModified)->maxSize();
+        $this->resumable()
+            ->length($tusFile->metadata['size'])
+            ->offset(Tus::storage()->size($tusFile->path))
+            ->expires(Tus::storage()->lastModified($tusFile->path));
 
         return $this;
     }
@@ -147,7 +165,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forPatch(int $offset, int $lastModified): static
     {
-        $this->resumable()->offset($offset)->expires($lastModified)->maxSize();
+        $this->resumable()->offset($offset)->expires($lastModified);
 
         return $this;
     }

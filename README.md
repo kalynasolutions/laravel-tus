@@ -5,9 +5,11 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/kalynasolutions/laravel-tus/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/kalynasolutions/laravel-tus/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kalynasolutions/laravel-tus.svg?style=flat-square)](https://packagist.org/packages/kalynasolutions/laravel-tus)
 
-Laravel package for handling resumable file uploads with tus protocol and native [Uppy.js](https://uppy.io) support **without** additional tus servers.
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/kalynasolutions/laravel-tus/php?style=flat-square)
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/kalynasolutions/laravel-tus/illuminate/contracts?color=%23F05340&label=laravel&style=flat-square)
+[![Tus.io Protocol Version](https://img.shields.io/badge/tus.io_protocol-1.0.0-brightgreen?style=flat-square)](https://tus.io/protocols/resumable-upload.html)
 
-> 100% Tus.io resumable upload [protocol](https://tus.io/protocols/resumable-upload.html) support
+Laravel package for handling resumable file uploads with tus protocol and native [Uppy.js](https://uppy.io) support **without** additional Tus servers.
 
 ## Installation
 
@@ -15,13 +17,6 @@ You can install the package via composer:
 
 ```bash
 composer require kalynasolutions/laravel-tus
-```
-
-You can publish and run the migrations with (optional):
-
-```bash
-php artisan vendor:publish --tag="laravel-tus-migrations"
-php artisan migrate
 ```
 
 You can publish the config file with (optional):
@@ -47,6 +42,17 @@ const uppy = new Uppy({ logger: debugLogger });
 
 uppy.use(Tus, { endpoint: TUS_ENDPOINT, limit: TUS_LIMIT, chunkSize: TUS_CHUNK_SIZE })
 ```
+
+## Tus Extensions
+
+| Extension            |          Supported          |
+|----------------------|:---------------------------:|
+| creation             |              ✅              |
+| creation-with-upload |              ✅              |
+| expiration           |              ✅              |
+| checksum             |              ✅              |
+| termination          |              ✅              |
+| concatenation        | ❌ (will be added on future) |
 
 ## Testing
 

@@ -5,7 +5,7 @@ namespace KalynaSolutions\Tus\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use KalynaSolutions\Tus\Exceptions\FileSizeLimitException;
-use KalynaSolutions\Tus\Exceptions\TusVersionMismatchException;
+use KalynaSolutions\Tus\Exceptions\VersionMismatchException;
 use KalynaSolutions\Tus\Facades\Tus;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,7 +14,7 @@ class ValidateFileSizeMiddleware
     /**
      * @param  Closure(Request): (Response)  $next
      *
-     * @throws TusVersionMismatchException
+     * @throws VersionMismatchException
      */
     public function handle(Request $request, Closure $next): Response
     {
