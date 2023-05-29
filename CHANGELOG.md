@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-tus` will be documented in this file.
 
+## v1.0.2 - 2023-05-29
+
+### What's Changed
+
+- feat: auto clear files functionality by @ArthurPatriot in https://github.com/kalynasolutions/laravel-tus/pull/7
+- fix: readme by @ArthurPatriot in https://github.com/kalynasolutions/laravel-tus/pull/8
+
+**Full Changelog**: https://github.com/kalynasolutions/laravel-tus/compare/v1.0.1...v1.0.2
+
 ## v1.0.1 - 2023-05-29
 
 ### What's Changed
