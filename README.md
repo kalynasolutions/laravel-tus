@@ -25,6 +25,16 @@ You can publish the config file with (optional):
 php artisan vendor:publish --tag="tus-config"
 ```
 
+### Pruning expired uploads
+
+> Don\`t forget configure `upload_expiration` parameter in your config.
+
+Without pruning, the tus uploads can accumulate storage very quickly. To mitigate this, you should schedule the `tus:prune` Artisan command:
+
+```php
+$schedule->command('tus:prune')->hourly()->runInBackground();
+```
+
 ## Usage with Uppy.js
 
 > You can use this package with other tus libraries, package fully implemented with Tus.io protocol RFC.
