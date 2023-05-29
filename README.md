@@ -1,4 +1,4 @@
-# Laravel Tus Package
+# Laravel Tus Package with native support of Uppy.js / Laravel Octane
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kalynasolutions/laravel-tus.svg?style=flat-square)](https://packagist.org/packages/kalynasolutions/laravel-tus)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kalynasolutions/laravel-tus/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kalynasolutions/laravel-tus/actions?query=workflow%3Arun-tests+branch%3Amain)
