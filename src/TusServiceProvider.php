@@ -17,7 +17,7 @@ class TusServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-tus')
-            ->hasConfigFile()
+            ->hasConfigFile('tus')
             ->hasRoute('tus')
             ->hasCommand(TusClearExpiredUploadsCommand::class);
     }

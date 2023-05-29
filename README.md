@@ -22,7 +22,7 @@ composer require kalynasolutions/laravel-tus
 You can publish the config file with (optional):
 
 ```bash
-php artisan vendor:publish --tag="laravel-tus-config"
+php artisan vendor:publish --tag="tus-config"
 ```
 
 ## Usage with Uppy.js

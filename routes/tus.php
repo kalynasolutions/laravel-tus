@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use KalynaSolutions\Tus\Http\Controllers\TusUploadController;
 use KalynaSolutions\Tus\Http\Middleware\ValidateChecksumMiddleware;
@@ -10,7 +9,6 @@ use KalynaSolutions\Tus\Http\Middleware\ValidateVersionMiddleware;
 Route::controller(TusUploadController::class)
     ->middleware(config('tus.middleware'))
     ->middleware(ValidateVersionMiddleware::class)
-    ->withoutMiddleware(VerifyCsrfToken::class)
     ->prefix(config('tus.path'))
     ->name('tus.')
     ->group(function () {

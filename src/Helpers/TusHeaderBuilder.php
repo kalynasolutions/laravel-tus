@@ -15,7 +15,10 @@ class TusHeaderBuilder implements Arrayable
     public function __construct(string $version)
     {
         $this->version = $version;
-        $this->headers = [];
+        $this->headers = [
+            'Access-Control-Expose-Headers' => '*',
+            'Tus-Resumable' => $version,
+        ];
     }
 
     /**
@@ -24,16 +27,6 @@ class TusHeaderBuilder implements Arrayable
     public function version(): static
     {
         $this->headers['Tus-Version'] = $this->version;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function resumable(): static
-    {
-        $this->headers['Tus-Resumable'] = $this->version;
 
         return $this;
     }
@@ -128,7 +121,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forOptions(): static
     {
-        $this->resumable()->version()->maxSize()->extensions()->checksumAlgorithm();
+        $this->version()->maxSize()->extensions()->checksumAlgorithm();
 
         return $this;
     }
@@ -138,7 +131,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forPost(TusFile $tusFile): static
     {
-        $this->resumable()
+        $this
             ->location($tusFile->id)
             ->offset(Tus::storage()->size($tusFile->path))
             ->expires(Tus::storage()->lastModified($tusFile->path))
@@ -152,7 +145,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forHead(TusFile $tusFile): static
     {
-        $this->resumable()
+        $this
             ->length($tusFile->metadata['size'])
             ->offset(Tus::storage()->size($tusFile->path))
             ->expires(Tus::storage()->lastModified($tusFile->path));
@@ -165,7 +158,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forPatch(int $offset, int $lastModified): static
     {
-        $this->resumable()->offset($offset)->expires($lastModified);
+        $this->offset($offset)->expires($lastModified);
 
         return $this;
     }
@@ -175,8 +168,6 @@ class TusHeaderBuilder implements Arrayable
      */
     public function default(): static
     {
-        $this->resumable();
-
         return $this;
     }
 
