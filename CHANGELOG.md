@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-tus` will be documented in this file.
 
+## v1.0.1 - 2023-05-29
+
+### What's Changed
+
+- build(deps): bump dependabot/fetch-metadata from 1.4.0 to 1.5.0 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/5
+- Dev by @ArthurPatriot in https://github.com/kalynasolutions/laravel-tus/pull/6
+
+### New Contributors
+
+- @dependabot made their first contribution in https://github.com/kalynasolutions/laravel-tus/pull/5
+
+**Full Changelog**: https://github.com/kalynasolutions/laravel-tus/compare/v1.0.0...v1.0.1
+
 ## First package release with core functionality - 2023-05-03
 
 ### What's Changed
