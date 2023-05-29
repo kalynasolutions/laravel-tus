@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use KalynaSolutions\Tus\Http\Controllers\TusUploadController;
 use KalynaSolutions\Tus\Http\Middleware\ValidateChecksumMiddleware;
