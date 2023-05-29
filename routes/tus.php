@@ -10,7 +10,6 @@ use KalynaSolutions\Tus\Http\Middleware\ValidateVersionMiddleware;
 Route::controller(TusUploadController::class)
     ->middleware(config('tus.middleware'))
     ->middleware(ValidateVersionMiddleware::class)
-    ->withoutMiddleware(VerifyCsrfToken::class)
     ->prefix(config('tus.path'))
     ->name('tus.')
     ->group(function () {

@@ -15,7 +15,10 @@ class TusHeaderBuilder implements Arrayable
     public function __construct(string $version)
     {
         $this->version = $version;
-        $this->headers = [];
+        $this->headers = [
+            'Access-Control-Expose-Headers' => '*',
+            'Tus-Resumable' => $version
+        ];
     }
 
     /**
@@ -23,17 +26,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function version(): static
     {
-        $this->headers['Tus-Version'] = $this->version;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function resumable(): static
-    {
-        $this->headers['Tus-Resumable'] = $this->version;
+        $this->headers[ 'Tus-Version' ] = $this->version;
 
         return $this;
     }
@@ -43,7 +36,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function offset(int $offset): static
     {
-        $this->headers['Upload-Offset'] = $offset;
+        $this->headers[ 'Upload-Offset' ] = $offset;
 
         return $this;
     }
@@ -53,7 +46,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function maxSize(): static
     {
-        $this->headers['Tus-Max-Size'] = Tus::maxFileSize();
+        $this->headers[ 'Tus-Max-Size' ] = Tus::maxFileSize();
 
         return $this;
     }
@@ -65,11 +58,11 @@ class TusHeaderBuilder implements Arrayable
     {
         $extensions = config('tus.extensions');
 
-        if (! is_array($extensions) || empty($extensions)) {
+        if (!is_array($extensions) || empty($extensions)) {
             return $this;
         }
 
-        $this->headers['Tus-Extension'] = implode(',', $extensions);
+        $this->headers[ 'Tus-Extension' ] = implode(',', $extensions);
 
         return $this;
     }
@@ -79,7 +72,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function location(string $id): static
     {
-        $this->headers['Location'] = route('tus.patch', $id);
+        $this->headers[ 'Location' ] = route('tus.patch', $id);
 
         return $this;
     }
@@ -89,11 +82,11 @@ class TusHeaderBuilder implements Arrayable
      */
     public function expires(int $lastModified): static
     {
-        if (! Tus::extensionIsActive('expiration')) {
+        if (!Tus::extensionIsActive('expiration')) {
             return $this;
         }
 
-        $this->headers['Upload-Expires'] = Date::createFromTimestamp($lastModified)->addMinutes((int) config('tus.upload_expiration'))->toRfc7231String();
+        $this->headers[ 'Upload-Expires' ] = Date::createFromTimestamp($lastModified)->addMinutes((int) config('tus.upload_expiration'))->toRfc7231String();
 
         return $this;
     }
@@ -103,11 +96,11 @@ class TusHeaderBuilder implements Arrayable
      */
     public function checksumAlgorithm(): static
     {
-        if (! Tus::extensionIsActive('checksum')) {
+        if (!Tus::extensionIsActive('checksum')) {
             return $this;
         }
 
-        $this->headers['Tus-Checksum-Algorithm'] = implode(',', (array) config('tus.checksum_algorithm'));
+        $this->headers[ 'Tus-Checksum-Algorithm' ] = implode(',', (array) config('tus.checksum_algorithm'));
 
         return $this;
     }
@@ -118,7 +111,7 @@ class TusHeaderBuilder implements Arrayable
             return $this;
         }
 
-        $this->headers['Upload-Length'] = $length;
+        $this->headers[ 'Upload-Length' ] = $length;
 
         return $this;
     }
@@ -128,7 +121,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forOptions(): static
     {
-        $this->resumable()->version()->maxSize()->extensions()->checksumAlgorithm();
+        $this->version()->maxSize()->extensions()->checksumAlgorithm();
 
         return $this;
     }
@@ -138,7 +131,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forPost(TusFile $tusFile): static
     {
-        $this->resumable()
+        $this
             ->location($tusFile->id)
             ->offset(Tus::storage()->size($tusFile->path))
             ->expires(Tus::storage()->lastModified($tusFile->path))
@@ -152,8 +145,8 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forHead(TusFile $tusFile): static
     {
-        $this->resumable()
-            ->length($tusFile->metadata['size'])
+        $this
+            ->length($tusFile->metadata[ 'size' ])
             ->offset(Tus::storage()->size($tusFile->path))
             ->expires(Tus::storage()->lastModified($tusFile->path));
 
@@ -165,7 +158,7 @@ class TusHeaderBuilder implements Arrayable
      */
     public function forPatch(int $offset, int $lastModified): static
     {
-        $this->resumable()->offset($offset)->expires($lastModified);
+        $this->offset($offset)->expires($lastModified);
 
         return $this;
     }
@@ -175,8 +168,6 @@ class TusHeaderBuilder implements Arrayable
      */
     public function default(): static
     {
-        $this->resumable();
-
         return $this;
     }
 
