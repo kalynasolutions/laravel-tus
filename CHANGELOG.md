@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-tus` will be documented in this file.
 
+## v1.0.3 - 2023-10-14
+
+### What's Changed
+
+- build(deps): bump aglipanci/laravel-pint-action from 2.2.0 to 2.3.0 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/9
+- build(deps): bump dependabot/fetch-metadata from 1.5.0 to 1.5.1 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/10
+- build(deps): bump dependabot/fetch-metadata from 1.5.1 to 1.6.0 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/11
+- build(deps): bump actions/checkout from 3 to 4 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/12
+- build(deps): bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/13
+
+**Full Changelog**: https://github.com/kalynasolutions/laravel-tus/compare/v1.0.2...v1.0.3
+
 ## v1.0.2 - 2023-05-29
 
 ### What's Changed
