@@ -1,4 +1,5 @@
 <?php
+use KalynaSolutions\Tus\Http\Middleware\ValidateVersionMiddleware;
 
 return [
     /*
@@ -25,7 +26,7 @@ return [
     | Default endpoint middlewares
     |--------------------------------------------------------------------------
     */
-    'middleware' => ['web'],
+    'middleware' => ['web', ValidateVersionMiddleware::class],
 
     /*
     |--------------------------------------------------------------------------
