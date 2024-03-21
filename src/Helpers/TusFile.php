@@ -23,7 +23,7 @@ final readonly class TusFile
         $this->metadata = $metadata;
     }
 
-    public static function create(string $id = null, int $size = 0, ?string $rawMetadata = null): static
+    public static function create(?string $id = null, int $size = 0, ?string $rawMetadata = null): static
     {
         if (! $id) {
             $id = Tus::id();

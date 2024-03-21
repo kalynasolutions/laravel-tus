@@ -75,7 +75,7 @@ class TusHeaderBuilder implements Arrayable
         $baseUrl = config('tus.url');
         $routeUrl = route('tus.patch', $id, is_null($baseUrl));
 
-        $this->headers['Location'] = is_null($baseUrl) ? $baseUrl . $routeUrl : $routeUrl;
+        $this->headers['Location'] = is_null($baseUrl) ? $baseUrl.$routeUrl : $routeUrl;
 
         return $this;
     }
