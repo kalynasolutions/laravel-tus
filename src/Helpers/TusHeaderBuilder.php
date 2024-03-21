@@ -72,7 +72,10 @@ class TusHeaderBuilder implements Arrayable
      */
     public function location(string $id): static
     {
-        $this->headers['Location'] = route('tus.patch', $id);
+        $baseUrl = config('tus.url');
+        $routeUrl = route('tus.patch', $id, is_null($baseUrl));
+
+        $this->headers['Location'] = is_null($baseUrl) ? $baseUrl . $routeUrl : $routeUrl;
 
         return $this;
     }
