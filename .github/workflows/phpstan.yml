@@ -16,11 +16,12 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
+          tools: composer:v2
           coverage: none
 
       - name: Install composer dependencies
-        uses: ramsey/composer-install@v3
+        run: composer update --prefer-stable --no-interaction --no-progress --ansi
 
       - name: Run PHPStan
         run: ./vendor/bin/phpstan --error-format=github
