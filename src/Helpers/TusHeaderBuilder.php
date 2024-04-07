@@ -72,7 +72,9 @@ class TusHeaderBuilder implements Arrayable
      */
     public function location(string $id): static
     {
-        $this->headers['Location'] = route('tus.patch', $id);
+        $this->headers['Location'] = config('tus.url')
+            ? config('tus.url').route('tus.patch', $id, false)
+            : route('tus.patch', $id);
 
         return $this;
     }
@@ -86,7 +88,9 @@ class TusHeaderBuilder implements Arrayable
             return $this;
         }
 
-        $this->headers['Upload-Expires'] = Date::createFromTimestamp($lastModified)->addMinutes((int) config('tus.upload_expiration'))->toRfc7231String();
+        $this->headers['Upload-Expires'] = Date::createFromTimestamp($lastModified)
+            ->addMinutes((int) config('tus.upload_expiration'))
+            ->toRfc7231String();
 
         return $this;
     }
