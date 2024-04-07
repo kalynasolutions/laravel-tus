@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-tus` will be documented in this file.
 
+## v1.1.1 - 2024-04-07
+
+### What's Changed
+
+* add url to config to work with proxy by @spelbreker in https://github.com/kalynasolutions/laravel-tus/pull/18
+
+### New Contributors
+
+* @spelbreker made their first contribution in https://github.com/kalynasolutions/laravel-tus/pull/18
+
+**Full Changelog**: https://github.com/kalynasolutions/laravel-tus/compare/v1.1.0...v1.1.1
+
 ## v1.0.3 - 2023-10-14
 
 ### What's Changed
