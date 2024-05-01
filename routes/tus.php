@@ -7,7 +7,7 @@ use KalynaSolutions\Tus\Http\Middleware\ValidateFileSizeMiddleware;
 use KalynaSolutions\Tus\Http\Middleware\ValidateVersionMiddleware;
 
 Route::controller(TusUploadController::class)
-    ->middleware(array_merge(config('tus.middleware'), [ValidateVersionMiddleware::class]))
+    ->middleware([...config('tus.middleware'), ValidateVersionMiddleware::class])
     ->prefix(config('tus.path'))
     ->name('tus.')
     ->group(function () {
