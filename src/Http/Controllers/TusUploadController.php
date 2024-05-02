@@ -28,7 +28,7 @@ class TusUploadController extends BaseController
             rawMetadata: $request->header('upload-metadata')
         );
 
-        $contents = Tus::extensionIsActive('creation-with-upload') && (int) $request->header('content-length') > 0 ? $request->getContent() : '';
+        $contents = Tus::extensionIsActive('creation-with-upload') && (int) $request->header('content-length') > 0 ? $request->getContent(true) : '';
 
         Tus::storage()->put(
             path: $tusFile->path,
@@ -83,7 +83,7 @@ class TusUploadController extends BaseController
             event(new FileUploadStarted($tusFile));
         }
 
-        $offset = Tus::storage()->size($tusFile->path) + Tus::append($tusFile->path, $request->getContent());
+        $offset = Tus::storage()->size($tusFile->path) + Tus::append($tusFile->path, $request->getContent(true));
 
         if ($offset === (int) Tus::metadata()->readMeta($id, 'size')) {
             event(new FileUploadFinished($tusFile));
