@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-tus` will be documented in this file.
 
+## v1.2.0 - 2024-06-01
+
+### What's Changed
+
+* use streams to append data to files by @ryssbowh in https://github.com/kalynasolutions/laravel-tus/pull/25
+
+**Full Changelog**: https://github.com/kalynasolutions/laravel-tus/compare/v1.1.2...v1.2.0
+
 ## v1.1.2 - 2024-05-01
 
 ### What's Changed
