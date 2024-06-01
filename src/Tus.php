@@ -41,9 +41,10 @@ class Tus
 
     public function isUploadExpired(int $lastModified): bool
     {
-        if ((int) config('tus.upload_expiration') < 1) {
+        if ((int) config('tus.upload_expiration') === 0) {
             return false;
         }
+
         return Date::createFromTimestamp($lastModified)->addMinutes((int) config('tus.upload_expiration'))->isPast();
     }
 
