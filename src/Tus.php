@@ -41,6 +41,10 @@ class Tus
 
     public function isUploadExpired(int $lastModified): bool
     {
+        if ((int) config('tus.upload_expiration') === 0) {
+            return false;
+        }
+
         return Date::createFromTimestamp($lastModified)->addMinutes((int) config('tus.upload_expiration'))->isPast();
     }
 
@@ -105,7 +109,7 @@ class Tus
         return Storage::disk(config('tus.storage_disk'));
     }
 
-    public function append(string $path, string $data): int
+    public function append(string $path, $data): int
     {
         $path = $this->storage()->path($path);
 
@@ -119,7 +123,7 @@ class Tus
             throw new FileAppendException(message: 'File open error');
         }
 
-        $fw = fwrite($fp, $data);
+        $fw = stream_copy_to_stream($data, $fp);
 
         if ($fw === false) {
             throw new FileAppendException(message: 'File write error');
