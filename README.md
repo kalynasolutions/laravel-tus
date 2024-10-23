@@ -35,6 +35,29 @@ Without pruning, the tus uploads can accumulate storage very quickly. To mitigat
 $schedule->command('tus:prune')->hourly()->runInBackground();
 ```
 
+### Events
+
+This package dispatches the following events:
+
+- **TusUploadBeforeCreated**: Dispatched before tus file being created. Can be used to validate file size, mime type, etc.
+- **TusUploadCreated**: Dispatched when a new file upload is created.
+- **TusUploadStarted**: Dispatched when a file upload is started.
+- **TusUploadFinished**: Dispatched when a file upload is finished.
+
+You can listen to these events in your `EventServiceProvider`:
+
+```php
+use KalynaSolutions\Tus\Events\TusUploadCreated;
+
+protected $listen = [
+    TusUploadCreated::class => [
+        \App\Listeners\HandleTusUploadCreated::class,
+    ],
+    ...
+];
+```
+
+
 ## Usage with Uppy.js
 
 > You can use this package with other tus libraries, package fully implemented with Tus.io protocol RFC.
@@ -73,10 +96,6 @@ composer test
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 

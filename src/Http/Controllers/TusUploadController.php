@@ -5,6 +5,7 @@ namespace KalynaSolutions\Tus\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use KalynaSolutions\Tus\Events\FileUploadBeforeCreated;
 use KalynaSolutions\Tus\Events\FileUploadCreated;
 use KalynaSolutions\Tus\Events\FileUploadFinished;
 use KalynaSolutions\Tus\Events\FileUploadStarted;
@@ -23,6 +24,8 @@ class TusUploadController extends BaseController
 
     public function post(Request $request): Response
     {
+        event(new FileUploadBeforeCreated($request));
+
         $tusFile = TusFile::create(
             size: $request->header('upload-length', 0),
             rawMetadata: $request->header('upload-metadata')
@@ -84,6 +87,7 @@ class TusUploadController extends BaseController
         }
 
         $offset = Tus::storage()->size($tusFile->path) + Tus::append($tusFile->path, $request->getContent(true));
+        $lastModified = Tus::storage()->lastModified($tusFile->path);
 
         if ($offset === (int) Tus::metadata()->readMeta($id, 'size')) {
             event(new FileUploadFinished($tusFile));
@@ -94,7 +98,7 @@ class TusUploadController extends BaseController
             headers: Tus::headers()
                 ->forPatch(
                     offset: $offset,
-                    lastModified: Tus::storage()->lastModified($tusFile->path)
+                    lastModified: $lastModified
                 )
                 ->toArray()
         );
