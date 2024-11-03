@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-tus` will be documented in this file.
 
+## v1.2.2 - 2024-11-03
+
+### What's Changed
+
+* added missed file by @akoevroman in https://github.com/kalynasolutions/laravel-tus/pull/28
+
+**Full Changelog**: https://github.com/kalynasolutions/laravel-tus/compare/v1.2.1...v1.2.2
+
 ## 1.2.1 - 2024-10-24
 
 ### What's Changed
