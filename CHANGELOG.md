@@ -2,6 +2,20 @@
 
 All notable changes to `laravel-tus` will be documented in this file.
 
+## v1.3.0 - 2025-04-18
+
+### What's Changed
+
+* build(deps): bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/30
+* build(deps): bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/kalynasolutions/laravel-tus/pull/31
+* add laravel 12 support by @irebussoft in https://github.com/kalynasolutions/laravel-tus/pull/32
+
+### New Contributors
+
+* @irebussoft made their first contribution in https://github.com/kalynasolutions/laravel-tus/pull/32
+
+**Full Changelog**: https://github.com/kalynasolutions/laravel-tus/compare/v1.2.2...v1.3.0
+
 ## v1.2.2 - 2024-11-03
 
 ### What's Changed
